@@ -1,0 +1,5 @@
+Blocked GEMM Result
+58 64 
+139 154 
+
+Execution Time : 0.000000 seconds
