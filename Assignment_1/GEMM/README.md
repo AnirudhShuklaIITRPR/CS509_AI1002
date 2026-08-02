@@ -45,13 +45,11 @@ GEMM/
 │   ├── test_case_1.txt
 │   ├── test_case_2.txt
 │   ├── test_case_3.txt
-│   └── ...
 │
 ├── output/
 │   ├── output_1.txt
 │   ├── output_2.txt
 │   ├── output_3.txt
-│   └── ...
 │
 ├── Makefile
 │
