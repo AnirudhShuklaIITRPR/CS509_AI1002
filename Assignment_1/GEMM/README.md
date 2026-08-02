@@ -214,16 +214,23 @@ The following operations are excluded from timing:
 
 ---
 
+# Experimental Results
 
-# Results
+The performance of both matrix multiplication algorithms was evaluated using three different test cases. Only the algorithm execution time was measured. File reading, memory allocation, and output generation were excluded from the timing.
 
-The program was tested on different matrix sizes. The execution time of both algorithms is shown below.
+| Test Case | Matrix Size | Simple GEMM (seconds) | Blocked GEMM (seconds) | Faster Algorithm |
+|-----------|-------------|----------------------:|-----------------------:|------------------|
+| Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | Both (Execution time too small to measure) |
+| Test Case 2 | 50 × 50 × 50 | 0.003000 | 0.001000 | Blocked GEMM |
+| Test Case 3 | 250 × 250 × 250 | 0.076000 | 0.153000 | Simple GEMM |
 
-| Test Case | Matrix Size | Simple GEMM (s) | Blocked GEMM (s) | Speedup |
-|-----------|-------------|----------------:|-----------------:|---------:|
-| Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | N/A |
-| Test Case 2 | 50 × 50 × 50 | 0.001000 | 0.001000 | 1.00× |
-| Test Case 3 | 250 × 250 × 250 | 0.100000 | 0.062000 | 1.61× |
+---
+
+# Observations
+
+- For very small matrices (2 × 3 × 2), both algorithms complete almost instantly, resulting in an execution time of **0.000000 seconds**.
+- For medium-sized matrices (50 × 50 × 50), the **Blocked GEMM** implementation performs better because it improves cache locality, reducing memory access overhead.
+- For the 250 × 250 × 250 test case, the **Simple GEMM** implementation was faster than the Blocked GEMM implementation on the current system.
 
 ---
 
