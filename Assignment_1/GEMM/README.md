@@ -216,6 +216,19 @@ The following operations are excluded from timing:
 
 ---
 
+
+# Results
+
+The program was tested on different matrix sizes. The execution time of both algorithms is shown below.
+
+| Test Case | Matrix Size | Simple GEMM (s) | Blocked GEMM (s) | Speedup |
+|-----------|-------------|----------------:|-----------------:|---------:|
+| Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | N/A |
+| Test Case 2 | 50 × 50 × 50 | 0.001000 | 0.001000 | 1.00× |
+| Test Case 3 | 250 × 250 × 250 | 0.100000 | 0.062000 | 1.61× |
+
+---
+
 # Time Complexity
 
 ## Simple GEMM
