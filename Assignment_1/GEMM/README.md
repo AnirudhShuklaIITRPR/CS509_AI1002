@@ -298,7 +298,7 @@ O(MK + KN + MN)
 
 # Files Description
 
-## driver.c
+## test_drivers.c
 
 Reads input files, creates matrices, calls algorithms, measures execution time, and writes output.
 
@@ -339,5 +339,5 @@ The execution time comparison confirms that the blocked implementation is more e
 
 # References
 
-1. CS509 Assignment 1 Document
+1. CS509 Assignment - 1 Document
 2. GCC Documentation
