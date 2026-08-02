@@ -218,11 +218,11 @@ The following operations are excluded from timing:
 
 The performance of both matrix multiplication algorithms was evaluated using three different test cases. Only the algorithm execution time was measured. File reading, memory allocation, and output generation were excluded from the timing.
 
-| Test Case | Matrix Size | Simple GEMM (seconds) | Blocked GEMM (seconds) | Faster Algorithm |
-|-----------|-------------|----------------------:|-----------------------:|------------------|
-| Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | Both (Execution time too small to measure) |
-| Test Case 2 | 50 × 50 × 50 | 0.003000 | 0.001000 | Blocked GEMM |
-| Test Case 3 | 250 × 250 × 250 | 0.076000 | 0.153000 | Simple GEMM |
+| Test Case | Matrix Size | Simple GEMM (seconds) | Blocked GEMM (seconds) | Faster Algorithm | Status|
+|-----------|-------------|----------------------:|-----------------------:|------------------|-------|
+| Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | Both (Execution time too small to measure) | pass |
+| Test Case 2 | 50 × 50 × 50 | 0.003000 | 0.001000 | Blocked GEMM | pass |
+| Test Case 3 | 250 × 250 × 250 | 0.076000 | 0.153000 | Simple GEMM | pass|
 
 ---
 
