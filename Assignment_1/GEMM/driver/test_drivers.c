@@ -6,93 +6,140 @@
 
 int main()
 {
-    FILE *fp;    
-    FILE *fo;
+    FILE *fp;
+    FILE *fo1;
+    FILE *fo2;
 
-    int M;
-    int K;
-    int N;
+    int M, K, N;
+    int choice;
+    int blockSize = 32;
 
-    // Open Input File
-    fp = fopen("tests/test_case_1.txt", "r");   // Subject to Change
+    printf("\nMATRIX MULTIPLICATION MENU\n");
+    printf("1. Simple GEMM\n");
+    printf("2. Blocked GEMM\n");
+    printf("3. Compare Both\n");
+    printf("0. Exit\n");
+    printf("-------------------------------------\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    if (choice == 0)
+    {
+        printf("Program Terminated.\n");
+        return 0;
+    }
+
+    fp = fopen("tests/test_case_3.txt", "r");
 
     if (fp == NULL)
     {
-        printf("Error: Unable to open input file.\n");
+        printf("Unable to open input file.\n");
         return 1;
     }
-    
-    // creatr Output File
-    fo = fopen("output/output_1.txt", "w");
-    
-    if (fo == NULL)
+
+    fo1 = fopen("output/SimpleGemm/output_3.txt", "w");
+    fo2 = fopen("output/BlockedGemm/output_3.txt", "w");
+
+    if (fo1 == NULL)
     {
         printf("Unable to create output file.\n");
+        fclose(fp);
         return 1;
     }
 
-    // Read Matrix Dimensions 
+    if (fo2 == NULL)
+    {
+        printf("Unable to create output file.\n");
+        fclose(fp);
+        return 1;
+    }
+
     fscanf(fp, "%d %d %d", &M, &K, &N);
 
-    // Create Matrices 
     Matrix A = createMatrix(M, K);
     Matrix B = createMatrix(K, N);
 
-    // Read Matrix A and Matrix B
     readMatrix(fp, &A);
     readMatrix(fp, &B);
 
     fclose(fp);
 
     clock_t start, end;
-    double simpleTime, blockedTime;
+    double executionTime;
 
-    int blockSize = 32;
+    switch(choice)
+    {
+        case 1:
+        {
+            start = clock();
+            Matrix C = multiplySimple(A, B);
+            end = clock();
 
-    // Simple GEMM 
-    start = clock();
-    Matrix C = multiplySimple(A, B);
-    end = clock();
-    simpleTime = (double)(end - start) / CLOCKS_PER_SEC;
+            executionTime = (double)(end-start)/CLOCKS_PER_SEC;
 
-    // Blocked GEMM
-    start = clock();
-    Matrix D = multiplyBlocked(A, B, blockSize);
-    end = clock();
-    blockedTime = (double)(end - start) / CLOCKS_PER_SEC;
+            printf("\nSimple GEMM Result\n");
+            printMatrix(C);
+            printf("\nExecution Time : %.6f seconds\n",executionTime);
+            
+            fprintf(fo1,"Simple GEMM Result\n");
+            writeMatrix(fo1,C);
+            fprintf(fo1,"\nExecution Time : %.6f seconds\n",executionTime);
 
-    // Display Input 
-    printf("\nMATRIX MULTIPLICATION\n");
-    printf("\nMatrix A (%d x %d)\n", A.rows, A.cols);
-    printMatrix(A);
-    printf("\nMatrix B (%d x %d)\n", B.rows, B.cols);
-    printMatrix(B);
+            freeMatrix(&C);
+            break;
+        }
 
-    // Simple GEMM Output 
-    printf("\nSimple GEMM Result\n");
-    printMatrix(C);
-    printf("\nExecution Time (Simple GEMM) : %.6f seconds\n",simpleTime);
-    // writing of output
-    fprintf(fo, "Simple GEMM Result\n");
-    writeMatrix(fo, C);
-    fprintf(fo, "\nExecution Time (Simple GEMM): %.6f seconds\n",simpleTime);
+        case 2:
+        {
+            start = clock();
+            Matrix D = multiplyBlocked(A,B,blockSize);
+            end = clock();
 
-    // Blocked GEMM Output 
-    printf("\nBlocked GEMM Result\n");
-    printMatrix(D);
-    printf("\nExecution Time (Blocked GEMM) : %.6f seconds\n",blockedTime);
-    // writing of output
-    fprintf(fo, "\nBlocked GEMM Result\n");
-    writeMatrix(fo, D);
-    fprintf(fo, "\nExecution Time (Blocked GEMM): %.6f seconds\n",blockedTime);
+            executionTime = (double)(end-start)/CLOCKS_PER_SEC;
 
-    // Free Memory 
+            printf("\nBlocked GEMM Result\n");
+            printMatrix(D);
+            printf("\nExecution Time : %.6f seconds\n",executionTime);
+
+            fprintf(fo2,"Blocked GEMM Result\n");
+            writeMatrix(fo2,D);
+            fprintf(fo2,"\nExecution Time : %.6f seconds\n",executionTime);
+
+            freeMatrix(&D);
+            break;
+        }
+
+        case 3:
+        {
+            double simpleTime, blockedTime;
+
+            start = clock();
+            Matrix C = multiplySimple(A,B);
+            end = clock();
+
+            simpleTime =(double)(end-start)/CLOCKS_PER_SEC;
+
+            start = clock();
+            Matrix D = multiplyBlocked(A,B,blockSize);
+            end = clock();
+
+            blockedTime =(double)(end-start)/CLOCKS_PER_SEC;
+
+            printf("\nSimple GEMM Time : %.6f seconds\n",simpleTime);
+            printf("Blocked GEMM Time : %.6f seconds\n",blockedTime);
+
+            break;
+        }
+
+        default:
+            printf("Invalid Choice\n");
+    }
+
     freeMatrix(&A);
     freeMatrix(&B);
-    freeMatrix(&C);
-    freeMatrix(&D);
 
-    fclose(fo);
+    fclose(fo1);
+    fclose(fo2);
 
     return 0;
 }
