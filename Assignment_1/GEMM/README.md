@@ -222,7 +222,7 @@ The performance of both matrix multiplication algorithms was evaluated using thr
 |-----------|-------------|----------------------:|-----------------------:|------------------|
 | Test Case 1 | 2 × 3 × 2 | 0.000000 | 0.000000 | Both (Execution time too small to measure) |
 | Test Case 2 | 50 × 50 × 50 | 0.003000 | 0.001000 | Blocked GEMM |
-| Test Case 3 | 250 × 250 × 250 | 0.076000 | 0.153000 | Simple GEMM |
+| Test Case 3 | 250 × 250 × 250 | 0.153000 | 0.076000 | Blocked GEMM |
 
 ---
 
