@@ -4,13 +4,14 @@
 
 #include "C:\Users\Dell\Downloads\CS509\Assignment_1\GEMM\src\matrix.h"
 
-void wrapper()
+int main()
 {
     FILE *fp;
+    FILE *fo1;
+    FILE *fo2;
 
     int M, K, N;
     int choice;
-    int inputfile;
     int blockSize = 32;
 
     printf("\nMATRIX MULTIPLICATION MENU\n");
@@ -25,18 +26,32 @@ void wrapper()
     if (choice == 0)
     {
         printf("Program Terminated.\n");
-        return;
+        return 0;
     }
 
-    printf("Enter the number of Input File: ");
-    scanf("%d", &inputfile);
-
-    fp = fopen("tests/test_case_{inputfile}.txt", "r");
+    fp = fopen("tests/test_case_3.txt", "r");
 
     if (fp == NULL)
     {
         printf("Unable to open input file.\n");
-        return;
+        return 1;
+    }
+
+    fo1 = fopen("output/SimpleGemm/output_3.txt", "w");
+    fo2 = fopen("output/BlockedGemm/output_3.txt", "w");
+
+    if (fo1 == NULL)
+    {
+        printf("Unable to create output file.\n");
+        fclose(fp);
+        return 1;
+    }
+
+    if (fo2 == NULL)
+    {
+        printf("Unable to create output file.\n");
+        fclose(fp);
+        return 1;
     }
 
     fscanf(fp, "%d %d %d", &M, &K, &N);
@@ -60,11 +75,15 @@ void wrapper()
             Matrix C = multiplySimple(A, B);
             end = clock();
 
-            executionTime = (double)(end - start) / CLOCKS_PER_SEC;
+            executionTime = (double)(end-start)/CLOCKS_PER_SEC;
 
             printf("\nSimple GEMM Result\n");
             printMatrix(C);
-            printf("\nExecution Time : %.6f seconds\n", executionTime);
+            printf("\nExecution Time : %.6f seconds\n",executionTime);
+            
+            fprintf(fo1,"Simple GEMM Result\n");
+            writeMatrix(fo1,C);
+            fprintf(fo1,"\nExecution Time : %.6f seconds\n",executionTime);
 
             freeMatrix(&C);
             break;
@@ -73,14 +92,18 @@ void wrapper()
         case 2:
         {
             start = clock();
-            Matrix D = multiplyBlocked(A, B, blockSize);
+            Matrix D = multiplyBlocked(A,B,blockSize);
             end = clock();
 
-            executionTime = (double)(end - start) / CLOCKS_PER_SEC;
+            executionTime = (double)(end-start)/CLOCKS_PER_SEC;
 
             printf("\nBlocked GEMM Result\n");
             printMatrix(D);
-            printf("\nExecution Time : %.6f seconds\n", executionTime);
+            printf("\nExecution Time : %.6f seconds\n",executionTime);
+
+            fprintf(fo2,"Blocked GEMM Result\n");
+            writeMatrix(fo2,D);
+            fprintf(fo2,"\nExecution Time : %.6f seconds\n",executionTime);
 
             freeMatrix(&D);
             break;
@@ -91,32 +114,32 @@ void wrapper()
             double simpleTime, blockedTime;
 
             start = clock();
-            Matrix C = multiplySimple(A, B);
+            Matrix C = multiplySimple(A,B);
             end = clock();
-            simpleTime = (double)(end - start) / CLOCKS_PER_SEC;
+
+            simpleTime =(double)(end-start)/CLOCKS_PER_SEC;
 
             start = clock();
-            Matrix D = multiplyBlocked(A, B, blockSize);
+            Matrix D = multiplyBlocked(A,B,blockSize);
             end = clock();
-            blockedTime = (double)(end - start) / CLOCKS_PER_SEC;
 
-            printf("\nSimple GEMM Result\n");
-            printMatrix(C);
-            printf("\nSimple GEMM Execution Time : %.6f seconds\n", simpleTime);
+            blockedTime =(double)(end-start)/CLOCKS_PER_SEC;
 
-            printf("\nBlocked GEMM Result\n");
-            printMatrix(D);
-            printf("\nBlocked GEMM Execution Time : %.6f seconds\n", blockedTime);
+            printf("\nSimple GEMM Time : %.6f seconds\n",simpleTime);
+            printf("Blocked GEMM Time : %.6f seconds\n",blockedTime);
 
-            freeMatrix(&C);
-            freeMatrix(&D);
             break;
         }
 
         default:
-            printf("\nInvalid Choice\n");
+            printf("Invalid Choice\n");
     }
 
     freeMatrix(&A);
     freeMatrix(&B);
+
+    fclose(fo1);
+    fclose(fo2);
+
+    return 0;
 }
