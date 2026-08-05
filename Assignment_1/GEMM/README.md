@@ -45,11 +45,22 @@ GEMM/
 │   ├── test_case_1.txt
 │   ├── test_case_2.txt
 │   ├── test_case_3.txt
+│   ├── test_case_4.txt
+│   ├── test_case_5.txt
 │
-├── output/
+├── output/SimpleGemm
 │   ├── output_1.txt
 │   ├── output_2.txt
 │   ├── output_3.txt
+│   ├── output_4.txt
+│   ├── output_5.txt
+|
+├── output/BloakcedGemm
+│   ├── output_1.txt
+│   ├── output_2.txt
+│   ├── output_3.txt
+│   ├── output_4.txt
+│   ├── output_5.txt
 │
 ├── Makefile
 │
@@ -235,6 +246,8 @@ The performance of both matrix multiplication algorithms was evaluated using thr
 - For very small matrices (2 × 3 × 2), both algorithms complete almost instantly, resulting in an execution time of **0.000000 seconds**.
 - For medium-sized matrices (50 × 50 × 50), the **Blocked GEMM** implementation performs better because it improves cache locality, reducing memory access overhead.
 - For the 250 × 250 × 250 test case, the **Simple GEMM** implementation was faster than the Blocked GEMM implementation on the current system.
+- For medium-sized matrices (500 × 500 × 500), the **Blocked GEMM** implementation performs better.
+- For medium-sized matrices (1000 × 1000 × 1000), the **Blocked GEMM** implementation performs better. 
 
 ---
 
